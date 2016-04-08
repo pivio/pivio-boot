@@ -52,4 +52,5 @@ docker-compose up -d --force-recreate
 
 sleep 10
 
-java -jar pivio-client/build/libs/pivio.jar -yamldir $PWD/pivio-demo-data/
+# TODO: need to figure out the ip of your docker-machine when running on e.g. mac
+##java -jar pivio-client/build/libs/pivio.jar -yamldir $PWD/pivio-demo-data/
