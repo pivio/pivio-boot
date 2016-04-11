@@ -26,6 +26,12 @@ if ! type "java" > /dev/null; then
   exit 1;
 fi
 
+if ! type "curl" > /dev/null; then
+  echo "Error: You need to have curl installed."
+  exit 1;
+fi
+
+
 if [ "$OS" == "Darwin" ]; then
   if ! type "docker-machine" > /dev/null; then
     echo "Error: You need to have docker-machine installed."
@@ -35,7 +41,7 @@ if [ "$OS" == "Darwin" ]; then
   if [ $DEFAULT_DOCKER_MACHINE -eq 1 ]; then
     HOSTNAME=`docker-machine ip default`
   else
-    echo "Error: docker-machine must run with name 'default'."
+    echo "Error: a docker-machine with the name 'default' must be running."
     exit 1;
   fi
 fi
