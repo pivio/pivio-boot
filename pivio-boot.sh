@@ -33,19 +33,36 @@ fi
 
 
 if [ "$OS" == "Darwin" ]; then
-  if ! type "docker-machine" > /dev/null; then
-    echo "Error: You need to have docker-machine installed."
-    exit 1;
-  fi
-  DEFAULT_DOCKER_MACHINE=`docker-machine ls | grep default | grep Running | wc -l`
-  if [ $DEFAULT_DOCKER_MACHINE -eq 1 ]; then
-    HOSTNAME=`docker-machine ip default`
+
+   NATIVE_DOCKER_CMD=`docker ps`
+   NATIVE_DOCKER=`echo $?`
+
+  if [ $NATIVE_DOCKER -ne 0 ]; then
+    echo "Check if docker-machine is running."
+
+    if ! type "docker-machine" > /dev/null; then
+      echo "Error: You need to have docker-machine installed."
+      exit 1;
+    fi
+
+
+    DEFAULT_DOCKER_MACHINE=`docker-machine ls | grep default | grep Running | wc -l`
+    if [ $DEFAULT_DOCKER_MACHINE -eq 1 ]; then
+      HOSTNAME=`docker-machine ip default`
+    else
+      echo "Error: a docker-machine with the name 'default' must be running."
+      exit 1;
+    fi
+
   else
-    echo "Error: a docker-machine with the name 'default' must be running."
-    exit 1;
+    echo "=================================================="
+    echo "You seem like to run docker mac beta. \n PLEASE MAKE SURE YOU HAVE ENABLED THE "
+    echo "\n\n EXPERIMENTAL VPN COMPATIBILITY MODE in the settings. \n\n\n"
+    echo "\n Press >ENTER< to continue \n"
+    echo "=================================================="
+    read
   fi
 fi
-
 
 # Start cloning the repositories.
 
@@ -132,5 +149,3 @@ else
 fi
 
 echo "You can stop the demo with 'docker-compose stop'."
-
-
