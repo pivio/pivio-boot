@@ -130,7 +130,7 @@ done
 
 echo "Uploading demo data."
 
-java -jar pivio-client/build/libs/pivio.jar -yamldir $PWD/pivio-demo-data/ -server http://$HOSTNAME:9123/document
+java -jar pivio-client/build/libs/pivio.jar -yamldir $PWD/pivio-demo-data/ -serviceurl http://$HOSTNAME:9123/document
 
 if [ $? -eq 0 ]; then
   echo "Waiting for enough entropy for the webserver to be available."
