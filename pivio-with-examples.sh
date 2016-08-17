@@ -97,9 +97,12 @@ pivio-web:
    - "8080:8080"
   links:
    - pivio-server
+  volumes:
+   - $PWD/pivio-web/pivio-conf/:/pivio-conf
   environment:
   - PIVIO_SERVER=http://pivio-server:9123
   - PIVIO_SERVER_JS=http://$HOSTNAME:9123
+  - PIVIO_VIEW=http://$HOSTNAME:8080
   devices:
   - "/dev/urandom:/dev/random"
 pivio-server:
