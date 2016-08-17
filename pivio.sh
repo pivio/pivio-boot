@@ -58,7 +58,6 @@ if [ "$OS" == "Darwin" ]; then
     echo "=================================================="
     echo "You seem like to run docker mac beta. \n PLEASE MAKE SURE YOU HAVE ENABLED THE "
     echo "\n\n EXPERIMENTAL VPN COMPATIBILITY MODE in the settings. \n\n\n"
-    echo "\n Press >ENTER< to continue \n"
     echo "=================================================="
     read
   fi
@@ -101,8 +100,11 @@ pivio-web:
    - $PWD/pivio-conf/:/pivio-conf
   devices:
   - "/dev/urandom:/dev/random"
-  extra_hosts:
- - "$HOSTNAME:162.242.195.82"
+  environment:
+  - PIVIO_SERVER=http://pivio-server:9123
+  - PIVIO_SERVER_JS=http://$HOSTNAME:9123
+  - PIVIO_VIEW=http://$HOSTNAME:8080
+
 pivio-server:
   build: pivio-server/
   ports:
@@ -120,7 +122,7 @@ EOF
 rm -rf pivio-conf
 mkdir -p pivio-conf
 cat <<EOF > pivio-conf/server_config.yaml
-api: http://$HOSTNAME:9123/
+api: http://pivio-server:9123/
 js_api: http://$HOSTNAME:9123/
 mainurl: http://$HOSTNAME:8080/
 pages:
