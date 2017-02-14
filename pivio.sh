@@ -156,10 +156,6 @@ if [ $? -eq 0 ]; then
       sleep 5
   done
 
-  echo "Uploading demo data."
-
-  java -jar pivio-client/build/libs/pivio.jar -yamldir $PWD/pivio-demo-data/ -serviceurl http://$HOSTNAME:9123/document
-
   echo "Open your webbrowser and point it to $HOSTNAME:8080";
   if [ $OS == "Darwin" ]; then
     open "http://$HOSTNAME:8080"
