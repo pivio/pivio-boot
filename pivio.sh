@@ -137,7 +137,7 @@ pages:
     id: tabFeed
 EOF
 
-docker-compose up -d --force-recreate
+docker-compose up -d --build
 
 echo "Waiting for the servers to come up (on $HOSTNAME). This can take a while because of not enough entropy on your machine."
 
