@@ -137,7 +137,7 @@ pages:
     id: tabFeed
 EOF
 
-docker-compose up -d --force-recreate
+docker-compose up -d --build
 
 echo "Waiting for the servers to come up (on $HOSTNAME). This can take a while because of not enough entropy on your machine."
 
@@ -155,10 +155,6 @@ if [ $? -eq 0 ]; then
       printf '.'
       sleep 5
   done
-
-  echo "Uploading demo data."
-
-  java -jar pivio-client/build/libs/pivio.jar -yamldir $PWD/pivio-demo-data/ -serviceurl http://$HOSTNAME:9123/document
 
   echo "Open your webbrowser and point it to $HOSTNAME:8080";
   if [ $OS == "Darwin" ]; then
