@@ -32,7 +32,7 @@ if ! type "curl" > /dev/null; then
 fi
 
 
-if [ "$OS" == "Darwin" ]; then
+if [ "$OS" = "Darwin" ]; then
 
    NATIVE_DOCKER_CMD=`docker ps`
    NATIVE_DOCKER=`echo $?`
@@ -66,9 +66,9 @@ fi
 
 # Start cloning the repositories.
 
-repos=(pivio-web pivio-server pivio-client pivio-demo-data)
+repos="pivio-web pivio-server pivio-client pivio-demo-data"
 
-for repo in ${repos[@]}
+for repo in ${repos}
 do
    echo $repo
    if [ -d "$repo" ]
@@ -143,7 +143,7 @@ if [ $? -eq 0 ]; then
   done
 
   echo "Open your webbrowser and point it to $HOSTNAME:8080";
-  if [ $OS == "Darwin" ]; then
+  if [ $OS = "Darwin" ]; then
     open "http://$HOSTNAME:8080"
   fi
 else
