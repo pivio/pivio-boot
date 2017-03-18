@@ -1,6 +1,6 @@
 # Getting started.
 
-Just run ./boot-pivio.sh
+Just run ./pivio.sh
 
 You need to have docker, gradle, java and docker-compose for now.
 
