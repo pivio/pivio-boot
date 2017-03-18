@@ -9,6 +9,6 @@ And point your browser to your docker machine on port 8080.
 Run
 
 ```
-curl https://raw.githubusercontent.com/pivio/pivio-boot/master/pivio-boot.sh | /bin/sh
+curl https://raw.githubusercontent.com/pivio/pivio-boot/master/pivio.sh | /bin/sh
 ```
 
