@@ -58,6 +58,7 @@ if [ "$OS" = "Darwin" ]; then
     echo "=================================================="
     echo "You seem like to run docker mac beta. \n PLEASE MAKE SURE YOU HAVE ENABLED THE "
     echo "\n\n EXPERIMENTAL VPN COMPATIBILITY MODE in the settings. \n\n\n"
+    echo "\n Press >ENTER< to continue \n"
     echo "=================================================="
     read
   fi
@@ -98,13 +99,12 @@ pivio-web:
    - pivio-server
   volumes:
    - $PWD/pivio-conf/:/pivio-conf
-  devices:
-  - "/dev/urandom:/dev/random"
   environment:
-  - PIVIO_SERVER=http://pivio-server:9123
-  - PIVIO_SERVER_JS=http://$HOSTNAME:9123
-  - PIVIO_VIEW=http://$HOSTNAME:8080
-
+   - PIVIO_SERVER=http://pivio-server:9123
+   - PIVIO_SERVER_JS=http://$HOSTNAME:9123
+   - PIVIO_VIEW=http://$HOSTNAME:8080
+  devices:
+   - "/dev/urandom:/dev/random"
 pivio-server:
   build: pivio-server/
   ports:
@@ -112,11 +112,12 @@ pivio-server:
   links:
    - elasticsearch
   devices:
-  - "/dev/urandom:/dev/random"
+   - "/dev/urandom:/dev/random"
 elasticsearch:
-  build: pivio-server/src/docker/elasticsearch
+  image: elasticsearch:2.4.6
+  command: ["/bin/sh", "-c", "plugin install delete-by-query && gosu elasticsearch elasticsearch"]
   devices:
-  - "/dev/urandom:/dev/random"
+   - "/dev/urandom:/dev/random"
 EOF
 
 rm -rf pivio-conf

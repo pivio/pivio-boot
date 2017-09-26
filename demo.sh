@@ -98,13 +98,13 @@ pivio-web:
   links:
    - pivio-server
   volumes:
-   - $PWD/pivio-web/pivio-conf/:/pivio-conf
+   - $PWD/pivio-conf/:/pivio-conf
   environment:
-  - PIVIO_SERVER=http://pivio-server:9123
-  - PIVIO_SERVER_JS=http://$HOSTNAME:9123
-  - PIVIO_VIEW=http://$HOSTNAME:8080
+   - PIVIO_SERVER=http://pivio-server:9123
+   - PIVIO_SERVER_JS=http://$HOSTNAME:9123
+   - PIVIO_VIEW=http://$HOSTNAME:8080
   devices:
-  - "/dev/urandom:/dev/random"
+   - "/dev/urandom:/dev/random"
 pivio-server:
   build: pivio-server/
   ports:
@@ -112,14 +112,33 @@ pivio-server:
   links:
    - elasticsearch
   devices:
-  - "/dev/urandom:/dev/random"
+   - "/dev/urandom:/dev/random"
 elasticsearch:
-  build: pivio-server/src/docker/elasticsearch
+  image: elasticsearch:2.4.6
+  command: ["/bin/sh", "-c", "plugin install delete-by-query && gosu elasticsearch elasticsearch"]
   devices:
-  - "/dev/urandom:/dev/random"
+   - "/dev/urandom:/dev/random"
 EOF
 
-docker-compose up -d --force-recreate
+rm -rf pivio-conf
+mkdir -p pivio-conf
+cat <<EOF > pivio-conf/server_config.yaml
+api: http://pivio-server:9123/
+js_api: http://$HOSTNAME:9123/
+mainurl: http://$HOSTNAME:8080/
+pages:
+  - description: Overview
+    url: /app/overview
+    id: tabOverview
+  - description: Query
+    url: /app/query
+    id: tabQuery
+  - description: Feed
+    url: /app/feed
+    id: tabFeed
+EOF
+
+docker-compose up -d --build
 
 echo "Waiting for the servers to come up (on $HOSTNAME). This can take a while because of not enough entropy on your machine."
 
@@ -143,7 +162,7 @@ if [ $? -eq 0 ]; then
   done
 
   echo "Open your webbrowser and point it to $HOSTNAME:8080";
-  if [ $OS = "Darwin" ]; then
+  if [ "$OS" = "Darwin" ]; then
     open "http://$HOSTNAME:8080"
   fi
 else
