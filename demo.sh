@@ -82,7 +82,7 @@ do
 
    cd $repo
    if [ -e "build.gradle" ]; then
-      ./gradlew build
+      ./gradlew build --no-daemon
    fi
    cd ..
 done
