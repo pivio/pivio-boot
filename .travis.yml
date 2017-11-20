@@ -1,0 +1,9 @@
+sudo: required
+
+jdk:
+  - oraclejdk8
+
+services:
+  - docker
+
+script: curl https://raw.githubusercontent.com/pivio/pivio-boot/master/demo.sh | /bin/sh
