@@ -1,4 +1,4 @@
-# Getting started.
+# Getting started
 
 Just run ./pivio.sh
 
@@ -18,4 +18,6 @@ You can get an empty Pivio running with
 curl https://raw.githubusercontent.com/pivio/pivio-boot/master/pivio.sh | /bin/sh
 ```
 
+## Build Status
 
+[![Build Status](https://travis-ci.org/pivio/pivio-boot.svg?branch=master)](https://travis-ci.org/pivio/pivio-boot)
