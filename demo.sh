@@ -89,42 +89,41 @@ done
 
 rm -r docker-compose.yml > /dev/null
 cat <<EOF > docker-compose.yml
-pivio-web:
-  build: pivio-web/
-  ports:
-   - "8080:8080"
-  links:
-   - pivio-server
-  volumes:
-   - $PWD/pivio-conf/:/pivio-conf
-  environment:
-   - PIVIO_SERVER=http://pivio-server:9123
-   - PIVIO_SERVER_JS=http://$HOSTNAME:9123
-   - PIVIO_VIEW=http://$HOSTNAME:8080
-  devices:
-   - "/dev/urandom:/dev/random"
-pivio-server:
-  build: pivio-server/
-  ports:
-   - "9123:9123"
-  links:
-   - elasticsearch
-  devices:
-   - "/dev/urandom:/dev/random"
-elasticsearch:
-  image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
-  environment:
-    - bootstrap.memory_lock=true
-    - cluster.name=elasticsearch
-    - discovery.type=single-node
-    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    - "xpack.security.enabled=false"
-  ulimits:
-    memlock:
-      soft: -1
-      hard: -1
-  devices:
-   - "/dev/urandom:/dev/random"
+version: '3'
+
+services:
+  pivio-web:
+    build: pivio-web/
+    ports:
+      - "8080:8080"
+    environment:
+      - PIVIO_SERVER=http://pivio-server:9123
+      - PIVIO_SERVER_JS=http://$HOSTNAME:9123
+      - PIVIO_VIEW=http://$HOSTNAME:8080
+    volumes:
+      - $PWD/pivio-conf/:/pivio-conf
+    devices:
+      - "/dev/urandom:/dev/random"
+  pivio-server:
+    build: pivio-server/
+    ports:
+      - "9123:9123"
+    devices:
+      - "/dev/urandom:/dev/random"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    environment:
+      - bootstrap.memory_lock=true
+      - cluster.name=elasticsearch
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=false"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    devices:
+      - "/dev/urandom:/dev/random"
 EOF
 
 rm -rf pivio-conf
