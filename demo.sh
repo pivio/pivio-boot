@@ -112,7 +112,17 @@ pivio-server:
   devices:
    - "/dev/urandom:/dev/random"
 elasticsearch:
-  image: elasticsearch:6.4.3
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+  environment:
+    - bootstrap.memory_lock=true
+    - cluster.name=elasticsearch
+    - discovery.type=single-node
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    - "xpack.security.enabled=false"
+  ulimits:
+    memlock:
+      soft: -1
+      hard: -1
   devices:
    - "/dev/urandom:/dev/random"
 EOF
