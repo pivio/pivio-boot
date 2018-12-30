@@ -114,8 +114,7 @@ pivio-server:
   devices:
    - "/dev/urandom:/dev/random"
 elasticsearch:
-  image: elasticsearch:2.4.6
-  command: ["/bin/sh", "-c", "if ! plugin list | grep -q delete-by-query; then plugin install delete-by-query; fi && gosu elasticsearch elasticsearch"]
+  image: elasticsearch:6.4.3
   devices:
    - "/dev/urandom:/dev/random"
 EOF
