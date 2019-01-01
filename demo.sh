@@ -173,7 +173,7 @@ if [ $? -eq 0 ]; then
       sleep 5
   done
 
-  echo "Open your webbrowser and point it to $HOSTNAME:8080";
+  echo Open your webbrowser and point it to "$HOSTNAME":8080;
   if [ "$OS" = "Darwin" ]; then
     open http://"$HOSTNAME":8080
   fi

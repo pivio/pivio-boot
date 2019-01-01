@@ -31,7 +31,6 @@ if ! type "curl" > /dev/null; then
   exit 1;
 fi
 
-
 if [ "$OS" = "Darwin" ]; then
 
    NATIVE_DOCKER_CMD=$(docker ps)
@@ -44,7 +43,6 @@ if [ "$OS" = "Darwin" ]; then
       echo Error: You need to have docker-machine installed.
       exit 1;
     fi
-
 
     DEFAULT_DOCKER_MACHINE=$(docker-machine ls | grep default | grep -c Running)
     if [ "$DEFAULT_DOCKER_MACHINE" -eq 1 ]; then
@@ -99,7 +97,6 @@ done
 rm -r docker-compose.yml > /dev/null
 cat <<EOF > docker-compose.yml
 version: '3'
-
 services:
   pivio-web:
     build: pivio-web/
@@ -174,7 +171,7 @@ if [ $? -eq 0 ]; then
 
   echo Open your webbrowser and point it to "$HOSTNAME":8080;
   if [ "$OS" = "Darwin" ]; then
-    open "http://$HOSTNAME:8080"
+    open http://"$HOSTNAME":8080
   fi
 else
   echo "Error: Oops, something went wrong. I'm sorry. Please file a bug report."
