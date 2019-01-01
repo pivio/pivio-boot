@@ -80,6 +80,13 @@ do
       git clone https://github.com/pivio/"$repo".git
    fi
 
+   if [[ $repo = pivio-server ]]; then
+      cd "$repo" || exit
+      git fetch origin spring-boot-1.5.10-to-2.1.1-upgrade
+      git checkout spring-boot-1.5.10-to-2.1.1-upgrade
+      cd ..
+   fi
+
    cd "$repo" || exit
    if [ -e "build.gradle" ]; then
       ./gradlew build --no-daemon
