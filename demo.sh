@@ -91,33 +91,34 @@ done
 
 rm -r docker-compose.yml > /dev/null
 cat <<EOF > docker-compose.yml
-pivio-web:
-  build: pivio-web/
-  ports:
-   - "8080:8080"
-  links:
-   - pivio-server
-  volumes:
-   - $PWD/pivio-conf/:/pivio-conf
-  environment:
-   - PIVIO_SERVER=http://pivio-server:9123
-   - PIVIO_SERVER_JS=http://$HOSTNAME:9123
-   - PIVIO_VIEW=http://$HOSTNAME:8080
-  devices:
-   - "/dev/urandom:/dev/random"
-pivio-server:
-  build: pivio-server/
-  ports:
-   - "9123:9123"
-  links:
-   - elasticsearch
-  devices:
-   - "/dev/urandom:/dev/random"
-elasticsearch:
-  image: elasticsearch:2.4.6
-  command: ["/bin/sh", "-c", "if ! plugin list | grep -q delete-by-query; then plugin install delete-by-query; fi && gosu elasticsearch elasticsearch"]
-  devices:
-   - "/dev/urandom:/dev/random"
+services:
+  pivio-web:
+    build: pivio-web/
+    ports:
+     - "8080:8080"
+    links:
+     - pivio-server
+    volumes:
+     - $PWD/pivio-conf/:/pivio-conf
+    environment:
+     - PIVIO_SERVER=http://pivio-server:9123
+     - PIVIO_SERVER_JS=http://$HOSTNAME:9123
+     - PIVIO_VIEW=http://$HOSTNAME:8080
+    devices:
+     - "/dev/urandom:/dev/random"
+  pivio-server:
+    build: pivio-server/
+    ports:
+     - "9123:9123"
+    links:
+     - elasticsearch
+    devices:
+     - "/dev/urandom:/dev/random"
+  elasticsearch:
+    image: elasticsearch:2.4.6
+    command: ["/bin/sh", "-c", "if ! plugin list | grep -q delete-by-query; then plugin install delete-by-query; fi && gosu elasticsearch elasticsearch"]
+    devices:
+     - "/dev/urandom:/dev/random"
 EOF
 
 rm -rf pivio-conf
