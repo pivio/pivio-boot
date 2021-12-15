@@ -60,7 +60,11 @@ if [ "$OS" = "Darwin" ]; then
     echo "\n\n EXPERIMENTAL VPN COMPATIBILITY MODE in the settings. \n\n\n"
     echo "\n Press >ENTER< to continue \n"
     echo "=================================================="
-    read
+    # A simple "read" is insufficient here as something from the script itself is read
+    # when a user runs
+    #     curl https://raw.githubusercontent.com/pivio/pivio-boot/master/demo.sh | /bin/sh
+    # Hence, we explicitly read from /dev/tty.
+    read < /dev/tty
   fi
 fi
 
@@ -82,7 +86,12 @@ do
 
    cd $repo
    if [ -e "build.gradle" ]; then
-      ./gradlew build --no-daemon
+      # The Gradle process reads from stdin. This conflicts with our intention
+      # to let users try out pivio by running
+      #   curl https://raw.githubusercontent.com/pivio/pivio-boot/master/demo.sh | /bin/sh
+      # So, we start it in a sub shell with its own empty stdin.
+      # See <https://github.com/gradle/gradle/issues/14961>.
+      (echo -n | ./gradlew build --no-daemon)
    fi
    cd ..
 done
